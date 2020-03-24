@@ -235,3 +235,4 @@ and configure [SMTP settings](https://docs.djangoproject.com/en/1.10/topics/emai
 ### Ownership of demo content
 
 All content in the demo is public domain. Textual content in this project is either sourced from Wikipedia or is lorem ipsum. All images are from either Wikimedia Commons or other copyright-free sources.
+
