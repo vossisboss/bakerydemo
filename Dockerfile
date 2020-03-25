@@ -56,11 +56,6 @@ ENV UWSGI_WORKERS=2 UWSGI_THREADS=4
 # uWSGI uploaded media file serving configuration:
 ENV UWSGI_STATIC_MAP="/media/=/code/bakerydemo/media/"
 
-# Heroku doesn't respect the EXPOSE setting, and uses $PORT instead:
-# https://devcenter.heroku.com/articles/container-registry-and-runtime#dockerfile-commands-and-runtime
-ENV UWSGI_HTTP_SOCKET=":${PORT}"
-ENV UWSGI_HTTP=":${PORT}"
-
 # Call collectstatic with dummy environment variables:
 RUN DATABASE_URL=postgres://none REDIS_URL=none /venv/bin/python manage.py collectstatic --noinput
 
@@ -74,4 +69,4 @@ VOLUME ["/code/bakerydemo/media/images/"]
 ENTRYPOINT ["/code/docker-entrypoint.sh"]
 
 # Start uWSGI
-CMD ["/venv/bin/uwsgi", "--show-config"]
+CMD ["/venv/bin/uwsgi", "--ini", "uwsgi.ini"]
