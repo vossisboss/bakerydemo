@@ -7,6 +7,8 @@ import django_cache_url
 
 from .base import *  # noqa: F403
 
+env = os.environ.copy()
+
 DEBUG = os.getenv('DJANGO_DEBUG', 'off') == 'on'
 
 # DJANGO_SECRET_KEY *should* be specified in the environment. If it's not, generate an ephemeral key.
@@ -28,7 +30,52 @@ SECURE_SSL_REDIRECT = os.getenv('DJANGO_SECURE_SSL_REDIRECT', 'off') == 'on'
 # See https://docs.djangoproject.com/en/1.10/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '*').split(';')
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+# Email settings
+# We use SMTP to send emails. We typically use transactional email services
+# that let us use SMTP.
+# https://docs.djangoproject.com/en/2.1/topics/email/
+
+# https://docs.djangoproject.com/en/stable/ref/settings/#email-host
+if "EMAIL_HOST" in env:
+    EMAIL_HOST = env["EMAIL_HOST"]
+
+# https://docs.djangoproject.com/en/stable/ref/settings/#email-port
+if "EMAIL_PORT" in env:
+    try:
+        EMAIL_PORT = int(env["EMAIL_PORT"])
+    except ValueError:
+        pass
+
+# https://docs.djangoproject.com/en/stable/ref/settings/#email-host-user
+if "EMAIL_HOST_USER" in env:
+    EMAIL_HOST_USER = env["EMAIL_HOST_USER"]
+
+# https://docs.djangoproject.com/en/stable/ref/settings/#email-host-password
+if "EMAIL_HOST_PASSWORD" in env:
+    EMAIL_HOST_PASSWORD = env["EMAIL_HOST_PASSWORD"]
+
+# https://docs.djangoproject.com/en/stable/ref/settings/#email-use-tls
+if env.get("EMAIL_USE_TLS", "false").lower().strip() == "true":
+    EMAIL_USE_TLS = True
+
+# https://docs.djangoproject.com/en/stable/ref/settings/#email-use-ssl
+if env.get("EMAIL_USE_SSL", "false").lower().strip() == "true":
+    EMAIL_USE_SSL = True
+
+# https://docs.djangoproject.com/en/stable/ref/settings/#email-subject-prefix
+if "EMAIL_SUBJECT_PREFIX" in env:
+    EMAIL_SUBJECT_PREFIX = env["EMAIL_SUBJECT_PREFIX"]
+
+# SERVER_EMAIL is used to send emails to administrators.
+# https://docs.djangoproject.com/en/stable/ref/settings/#server-email
+# DEFAULT_FROM_EMAIL is used as a default for any mail send from the website to
+# the users.
+# https://docs.djangoproject.com/en/stable/ref/settings/#default-from-email
+if "SERVER_EMAIL" in env:
+    SERVER_EMAIL = DEFAULT_FROM_EMAIL = env["SERVER_EMAIL"]
+
 
 # BASE_URL required for notification emails
 BASE_URL = 'http://localhost:8000'
