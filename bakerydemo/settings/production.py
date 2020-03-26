@@ -78,7 +78,7 @@ if "SERVER_EMAIL" in env:
 
 
 # BASE_URL required for notification emails
-BASE_URL = 'http://localhost:8000'
+BASE_URL = 'https://wagtailworkflow.torchbox.com'
 
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
