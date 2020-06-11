@@ -4,5 +4,5 @@ build:
 release:
   image: web
   command:
-    - /venv/bin/python manage.py createcachetable && /venv/bin/python manage.py migrate --fake wagtailcore 0049 --no-input && /venv/bin/python manage.py migrate --fake wagtailcore 0050 --noinput
+    - /venv/bin/python manage.py createcachetable && /venv/bin/python manage.py migrate
 
