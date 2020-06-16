@@ -4,6 +4,8 @@ import string
 
 import dj_database_url
 import django_cache_url
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 
 from .base import *  # noqa: F403
 
@@ -18,6 +20,16 @@ else:
     # Use if/else rather than a default value to avoid calculating this if we don't need it
     print("WARNING: DJANGO_SECRET_KEY not found in os.environ. Generating ephemeral SECRET_KEY.")
     SECRET_KEY = ''.join([random.SystemRandom().choice(string.printable) for i in range(50)])
+
+if 'SENTRY_DSN' in env:
+    sentry_sdk.init(
+        dsn=env['SENTRY_DSN'],
+        integrations=[DjangoIntegration()],
+
+        # If you wish to associate users to errors (assuming you are using
+        # django.contrib.auth) you may enable sending PII data.
+        send_default_pii=True
+    )
 
 # Make sure Django can detect a secure connection properly on Heroku:
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
