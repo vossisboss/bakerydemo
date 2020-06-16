@@ -18,6 +18,11 @@ RUN set -ex \
     && apt-get update && apt-get install -y --no-install-recommends $RUN_DEPS \
     && rm -rf /var/lib/apt/lists/*
 
+RUN mkdir /code/
+WORKDIR /code/
+
+ADD *.whl /code/
+
 ADD requirements/ /requirements/
 RUN set -ex \
     && BUILD_DEPS=" \
@@ -36,8 +41,6 @@ RUN set -ex \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false $BUILD_DEPS \
     && rm -rf /var/lib/apt/lists/*
 
-RUN mkdir /code/
-WORKDIR /code/
 ADD . /code/
 EXPOSE 8000
 
