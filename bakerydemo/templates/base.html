@@ -1,4 +1,4 @@
-{% load navigation_tags static wagtailuserbar wagtailreview_tags %}
+{% load navigation_tags static wagtailuserbar %}
 
 {% block head %}
     {% include "includes/head.html" %}
@@ -41,8 +41,6 @@
     {% load static %}
     <script src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
-
-    {% wagtailreview %}
 
 </body>
 

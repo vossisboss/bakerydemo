@@ -57,7 +57,6 @@ INSTALLED_APPS = [
     'modelcluster',
     'taggit',
     'wagtailfontawesome',
-    'wagtail_review',
 
     'django.contrib.admin',
     'django.contrib.auth',
